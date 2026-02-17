@@ -6,7 +6,7 @@ set PYTHONPATH=%CD%\piper_train\src\python
 set DATASET_DIR=%CD%\training_filtered
 
 echo ============================================
-echo   AiAntargyanV2 - Marathi TTS Training
+echo   MarathiTTSv1 - Marathi TTS Training
 echo ============================================
 echo.
 
@@ -38,7 +38,7 @@ if %ERRORLEVEL% neq 0 (
 
 :: 2. Start Training (from scratch — text mode is incompatible with phoneme checkpoints)
 echo.
-echo [Step 2/2] Starting AiAntargyanV2 Training (from scratch)...
+echo [Step 2/2] Starting MarathiTTSv1 Training (from scratch)...
 echo   Dataset:    %DATASET_DIR%
 echo   PYTHONPATH: %PYTHONPATH%
 echo   Mode:       Training from scratch (text-mode, Windows compatible)

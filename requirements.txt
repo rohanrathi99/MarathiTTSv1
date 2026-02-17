@@ -1,4 +1,4 @@
-# AiAntargyanV2 — Marathi TTS Dependencies
+# MarathiTTSv1 — Marathi TTS Dependencies
 # Install with: pip install -r requirements.txt
 # Then install PyTorch separately: pip install torch torchaudio
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# AiAntargyanV2 — Marathi TTS Training Script (Linux/Colab/Docker)
+# MarathiTTSv1 — Marathi TTS Training Script (Linux/Colab/Docker)
 #
 # Usage:
 #   ./scripts/train.sh                    # Fine-tune from English checkpoint
@@ -27,7 +27,7 @@ done
 
 # === 1. Preprocessing ===
 echo "============================================"
-echo "  AiAntargyanV2 — Marathi TTS Training"
+echo "  MarathiTTSv1 — Marathi TTS Training"
 echo "============================================"
 echo ""
 

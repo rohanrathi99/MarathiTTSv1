@@ -1,1 +1,1 @@
-# AiAntargyanV2 scripts package
+# MarathiTTSv1 scripts package

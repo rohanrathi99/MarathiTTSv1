@@ -1,5 +1,5 @@
 #!/bin/bash
-# Setup Piper TTS training code for AiAntargyanV2
+# Setup Piper TTS training code for MarathiTTSv1
 #
 # This script clones the Piper repository and sets it up for training.
 # Run this once before training.

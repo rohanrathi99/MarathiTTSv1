@@ -1,11 +1,11 @@
-# AiAntargyanV2 — Marathi Text-to-Speech
+# MarathiTTSv1 — Marathi Text-to-Speech
 
 A Marathi Text-to-Speech (TTS) training pipeline using [Piper](https://github.com/rhasspy/piper) and the VITS architecture. Trained on the [OpenSLR-64](https://openslr.org/64/) Marathi dataset, designed for offline deployment on Raspberry Pi.
 
 ## Project Structure
 
 ```
-AiAntargyanV2/
+MarathiTTSv1/
 ├── scripts/                    # All pipeline scripts
 │   ├── setup_piper.sh          # One-time setup (Linux/Mac)
 │   ├── format_data.py          # Data preparation (OpenSLR-64 → LJSpeech)
@@ -47,8 +47,8 @@ AiAntargyanV2/
 
 ```bash
 # Clone this repository
-git clone <your-repo-url> AiAntargyanV2
-cd AiAntargyanV2
+git clone <your-repo-url> MarathiTTSv1
+cd MarathiTTSv1
 
 # Run setup (installs Piper, espeak-ng, dependencies)
 chmod +x scripts/setup_piper.sh
@@ -179,8 +179,8 @@ Estimated cost: **$10–$30** (fine-tuning with Colab Pro on T4)
 
 ```python
 # In a Colab notebook:
-!git clone <your-repo-url> AiAntargyanV2
-%cd AiAntargyanV2
+!git clone <your-repo-url> MarathiTTSv1
+%cd MarathiTTSv1
 !chmod +x scripts/setup_piper.sh && ./scripts/setup_piper.sh
 
 # Download OpenSLR-64
