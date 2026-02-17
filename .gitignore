@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Project specific
+data/
+training/
+*.wav
+*.mp3
+*.flac
+dataset.jsonl
+
+# Piper build artifacts
+piper_train/build/
+piper_train/dist/
+piper_train/*.egg-info/
+piper_train/src/python/build/
+piper_train/src/python/dist/
+piper_train/src/python/*.egg-info/
+
+# IDE
+.vscode/
+.idea/
