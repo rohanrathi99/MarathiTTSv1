@@ -41,7 +41,13 @@ def main():
         for row in reader:
             if len(row) >= 2:
                 filename = row[0]
-                text = row[1]
+                raw_text = row[1]
+                try:
+                    from normalize_marathi import normalize_text
+                    text = normalize_text(raw_text)
+                except ImportError:
+                     print("Warning: normalize_marathi not found, using raw text")
+                     text = raw_text
                 transcripts.append((filename, text))
 
     print(f"Found {len(transcripts)} items.")
@@ -65,7 +71,9 @@ def main():
             
             if os.path.exists(src_file):
                 dst_file = os.path.join(OUTPUT_WAVS, filename + ".wav")
-                futures.append(executor.submit(process_audio, filename, src_file, dst_file))
+                if not os.path.exists(dst_file):
+                    futures.append(executor.submit(process_audio, filename, src_file, dst_file))
+                # Always append to valid entries for metadata
                 valid_entries.append((filename, text))
             else:
                 # print(f"File not found: {filename}")
