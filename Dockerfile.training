@@ -3,27 +3,32 @@ FROM nvcr.io/nvidia/pytorch:22.03-py3
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     espeak-ng \
+    libespeak-ng1 \
     libsndfile1 \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy requirements
-COPY piper_train/src/python/requirements.txt ./requirements.txt
-
-# Install dependencies
-# Note: piper-phonemize might fail if not available for linux aarch64/amd64? 
-# The base image is likely amd64. piper-phonemize should have wheels for linux.
+# Install Python dependencies first (for better Docker caching)
+COPY requirements.txt ./requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copy source code
-COPY piper_train/src/python ./src/python
+# Copy project source
+COPY scripts/ ./scripts/
+COPY piper_train/ ./piper_train/
 
-# Build monotonic alignment extension
-WORKDIR /app/src/python
-RUN python3 setup.py build_ext --inplace
+# Build monotonic alignment extension (required for VITS)
+WORKDIR /app/piper_train/src/python
+RUN pip3 install -e . && \
+    cd piper_train/vits/monotonic_align && \
+    python3 setup.py build_ext --inplace
 
-# Set python path
-ENV PYTHONPATH=/app/src/python
+# Set Python path for piper_train imports
+ENV PYTHONPATH=/app/piper_train/src/python
+ENV NUMBA_CACHE_DIR=/tmp/numba_cache
 
 WORKDIR /app
+
+# Default command: show help
+CMD ["echo", "Use: docker run --gpus all -v /path/to/data:/app/data -v /path/to/output:/app/output <image> ./scripts/train.sh"]
