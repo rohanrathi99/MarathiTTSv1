@@ -4,10 +4,19 @@ A Marathi Text-to-Speech (TTS) training project using [Piper](https://github.com
 
 ## Project Structure
 
-- `data/`: Contains raw audio and transcripts (OpenSLR-64).
-- `scripts/`: Helper scripts for data formatting and training.
+- `data/`: Contains raw audio `mr_in_female` and filtered dataset `ljspeech_filtered`.
+- `scripts/`: Helper scripts for data formatting, normalization, and training.
 - `piper_train/`: Modified Piper training scripts (patched for Windows & PyTorch Lightning 2.x).
-- `training/`: Output directory for checkpoints, logs, and processed dataset.
+- `training_filtered/`: Output directory for checkpoints, logs, and processed dataset (from filtered data).
+- `checkpoints/`: Contains pre-trained checkpoints for fine-tuning.
+
+## Guide Aligned Setup
+
+This project follows a "Guide Aligned" approach for higher quality:
+1.  **Best Speaker Selection**: Automatically filters for speaker `04310` (most frequent).
+2.  **Audio Filtering**: Removes clips based on duration (1-15s) and RMS amplitude.
+3.  **Robust Normalization**: Uses detailed Marathi text normalization.
+4.  **Fine-Tuning**: Uses an English checkpoint to bootstrap training.
 
 ## Setup
 
@@ -18,29 +27,28 @@ A Marathi Text-to-Speech (TTS) training project using [Piper](https://github.com
     ```
 
 2.  **Prepare Data**:
-    The dataset is expected in `data/`. Run the formatting script:
+    Run the formatting script to generate the filtered and normalized dataset in `data/ljspeech_filtered`:
     ```bash
     python scripts/format_data.py
     ```
 
-3.  **Preprocessing**:
-    Preprocessing generates the `dataset.jsonl` and `config.json` used for training.
+3.  **Download Checkpoint**:
+    Download the pre-trained English checkpoint for fine-tuning:
     ```bash
-    # This is handled automatically, or you can run:
-    python -m piper_train.preprocess ...
+    python scripts/download_checkpoint.py
     ```
 
 ## Training
 
-To start training, simply run the provided batch script:
+To start training (Fine-Tuning mode), run:
 ```batch
 scripts\train.bat
 ```
 
 This script will:
-- set up the `PYTHONPATH` correctly.
-- Auto-detect GPU/CPU (`--accelerator auto`).
-- Start training with VITS.
+- Run preprocessing on `data/ljspeech_filtered` if needed.
+- Start VITS training using the `en_US-lessac-medium.ckpt` checkpoint.
+- Auto-detect GPU/CPU.
 
 ## Notes
 

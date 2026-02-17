@@ -11,6 +11,8 @@ venv/
 # Project specific
 data/
 training/
+training_filtered/
+checkpoints/
 *.wav
 *.mp3
 *.flac
