@@ -22,14 +22,16 @@ if not exist "%CD%\data\ljspeech_filtered\wavs" (
 :: NOTE: This mode is NOT compatible with fine-tuning from an English phoneme checkpoint.
 ::       We train from scratch instead.
 echo [Step 1/2] Running preprocessing...
-python -m piper_train.preprocess ^
+venv\scripts\python.exe -u -m piper_train.preprocess ^
     --language mr ^
     --input-dir "%CD%\data\ljspeech_filtered" ^
     --output-dir "%DATASET_DIR%" ^
     --dataset-format ljspeech ^
     --single-speaker ^
     --sample-rate 22050 ^
-    --phoneme-type text
+    --phoneme-type text ^
+    --max-workers 1 ^
+    --debug
 
 if %ERRORLEVEL% neq 0 (
     echo ERROR: Preprocessing failed.
@@ -47,15 +49,15 @@ echo   NOTE: For faster training via fine-tuning, use scripts/train.sh on Linux
 echo         where espeak-ng phonemes and checkpoint fine-tuning are supported.
 echo.
 
-python -m piper_train ^
+venv\scripts\python.exe -m piper_train ^
     --dataset-dir "%DATASET_DIR%" ^
     --accelerator auto ^
     --devices auto ^
-    --batch-size 32 ^
+    --batch-size 8 ^
     --validation-split 0.05 ^
     --num-test-examples 5 ^
     --max_epochs 2000 ^
-    --checkpoint-epochs 50 ^
+    --check_val_every_n_epoch 10 ^
     --precision 32 ^
     %*
 
