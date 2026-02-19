@@ -1,8 +1,15 @@
-# MarathiTTSv1 — Marathi TTS Dependencies
-# Install with: pip install -r requirements.txt
-# Then install PyTorch separately: pip install torch torchaudio
+# MarathiTTSv1 — Python Dependencies
+# Install: pip install -r requirements.txt
+# Then install PyTorch separately (see note below).
 
-# Data processing
+# ── Core fix: setuptools must be explicit on Python 3.12+ ───────────────────
+# Python 3.12 no longer auto-installs setuptools into virtual environments.
+# pkg_resources (used by pytorch-lightning < 2.3) lives inside setuptools.
+# Without this line, training fails with:
+#   ModuleNotFoundError: No module named 'pkg_resources'
+setuptools>=68.0.0
+
+# ── Data processing ─────────────────────────────────────────────────────────
 librosa>=0.10.0
 soundfile>=0.12.0
 pandas>=1.5.0
@@ -10,15 +17,28 @@ numpy>=1.23.0
 scipy>=1.9.0
 tqdm>=4.64.0
 
-# Training (Piper uses PyTorch Lightning)
-pytorch-lightning>=1.7.0,<2.0.0
-torchmetrics>=0.11.0,<1.0.0
+# ── Training ─────────────────────────────────────────────────────────────────
+# FIX: version conflict resolved.
+#   Old (broken): pytorch-lightning>=1.7.0,<2.0.0   <- conflicts with piper_train_patches
+#   New  (fixed): pytorch-lightning>=2.4.0,<3.0.0   <- matches piper_train_patches/requirements.txt
+#                                                       AND uses lightning_fabric >= 2.3 which
+#                                                       no longer requires pkg_resources at all.
+pytorch-lightning>=2.4.0,<3.0.0
+lightning>=2.4.0,<3.0.0
+torchmetrics>=0.11.0
 
-# NOTE: torch and torchaudio are NOT listed here because the correct version
-# depends on your CUDA version. Install separately:
-#   CPU only:    pip install torch torchaudio
-#   CUDA 11.8:   pip install torch torchaudio --extra-index-url https://download.pytorch.org/whl/cu118
-#   CUDA 12.1:   pip install torch torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
+# ── PyTorch — install separately to match your CUDA version ─────────────────
+# CPU only:
+#   pip install torch torchaudio
+#
+# CUDA 11.8:
+#   pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu118
+#
+# CUDA 12.4 (RTX 30/40 series, recommended for Windows):
+#   pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu124
+#
+# CUDA 12.1:
+#   pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121
 
-# NOTE: num2words is NOT included — it does not support Marathi.
-# The normalizer uses a built-in lookup table instead.
+# ── NOTE: num2words is intentionally excluded ────────────────────────────────
+# num2words does NOT support Marathi. The normaliser uses its own lookup table.
